@@ -67,31 +67,39 @@ app.get("/health", (_req, res) => {
 });
 
 bot.use(async (ctx, next) => {
-  if (ctx.from) {
-    await updateDb((db) => {
-      const now = new Date().toISOString();
-      const user = upsertUser(db, {
-        id: ctx.from.id,
-        firstName: ctx.from.first_name,
-        username: ctx.from.username,
-        lastSeen: now
-      });
-
-      if ("message" in ctx.update) {
-        user.messages += 1;
-      }
-    });
+  const from = ctx.from;
+  if (!from) {
+    return next();
   }
+
+  await updateDb((db) => {
+    const now = new Date().toISOString();
+    const user = upsertUser(db, {
+      id: from.id,
+      firstName: from.first_name,
+      username: from.username,
+      lastSeen: now
+    });
+
+    if ("message" in ctx.update) {
+      user.messages += 1;
+    }
+  });
 
   return next();
 });
 
 bot.start(async (ctx) => {
+  const from = ctx.from;
+  if (!from) {
+    return;
+  }
+
   const starts = await updateDb((db) => {
     const user = upsertUser(db, {
-      id: ctx.from.id,
-      firstName: ctx.from.first_name,
-      username: ctx.from.username,
+      id: from.id,
+      firstName: from.first_name,
+      username: from.username,
       lastSeen: new Date().toISOString()
     });
 
@@ -100,7 +108,7 @@ bot.start(async (ctx) => {
   });
 
   await ctx.reply(
-    `Добрый день, ${ctx.from.first_name}! Выберите язык:`,
+    `Добрый день, ${from.first_name}! Выберите язык:`,
     Markup.inlineKeyboard([
       Markup.button.callback("Ru", "lang:ru"),
       Markup.button.callback("Ua", "lang:ua")
