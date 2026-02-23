@@ -10,7 +10,7 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 const PORT = Number(process.env.PORT ?? 3000);
 const WEBHOOK_URL = process.env.WEBHOOK_URL;
 const WEBHOOK_PATH = process.env.WEBHOOK_PATH ?? "/webhook";
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME ?? "odysseus_den";
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME ?? "";
 const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID;
 
 type CategoryKey = "inverters" | "batteries" | "bundles";
