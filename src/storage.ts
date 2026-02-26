@@ -16,7 +16,11 @@ export type Db = {
 };
 
 const DEFAULT_DB: Db = { users: {} };
-const DB_PATH = process.env.DB_PATH ?? path.join(process.cwd(), "data", "db.json");
+const DEFAULT_DB_PATH =
+  process.env.VERCEL || process.env.VERCEL_ENV
+    ? path.join("/tmp", "db.json")
+    : path.join(process.cwd(), "data", "db.json");
+const DB_PATH = process.env.DB_PATH ?? DEFAULT_DB_PATH;
 
 let writeQueue: Promise<void> = Promise.resolve();
 
