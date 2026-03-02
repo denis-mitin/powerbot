@@ -179,9 +179,9 @@ function registerHandlers(bot: Telegraf): void {
     await ctx.reply(
       lang === "ru" ? "Выберите бренд инвертора:" : "Оберіть бренд інвертора:",
       Markup.inlineKeyboard([
-        Markup.button.callback("Deye", "inv:deye"),
-        Markup.button.callback("Oukitel", "inv:oukitel"),
-        Markup.button.callback("Fossibot", "inv:fossibot")
+        Markup.button.callback("Must", "inv:must"),
+        Markup.button.callback("Felicity", "inv:felicity"),
+        Markup.button.callback("DEYE", "inv:deye")
       ])
     );
 
@@ -189,7 +189,7 @@ function registerHandlers(bot: Telegraf): void {
     console.log(`username ${username} selected category inverters`);
   });
 
-  bot.action(/inv:(deye|oukitel|fossibot)/, async (ctx) => {
+  bot.action(/inv:(deye|must|felicity)/, async (ctx) => {
     const brand = ctx.match[1];
     const username =
       ctx.from?.username ??
@@ -200,14 +200,40 @@ function registerHandlers(bot: Telegraf): void {
     console.log(`username ${username} selected category inverters brand ${brand}`);
 
     await ctx.answerCbQuery(`Selected ${brand}`);
-    await ctx.reply(
-      "Мощность:",
-      Markup.inlineKeyboard([
-        Markup.button.callback("5кВт", `power:inverters:${brand}:5kw`),
-        Markup.button.callback("6кВт", `power:inverters:${brand}:6kw`),
-        Markup.button.callback("8 кВт", `power:inverters:${brand}:8kw`)
-      ])
-    );
+
+    if (brand == 'deye') {
+      await ctx.reply(
+        "Мощность:",
+        Markup.inlineKeyboard([
+          Markup.button.callback("5кВт", `power:inverters:${brand}:5kw`),
+          Markup.button.callback("6кВт", `power:inverters:${brand}:6kw`),
+          Markup.button.callback("8 кВт", `power:inverters:${brand}:8kw`)
+        ])
+      );
+    }
+    if (brand == 'felicity') {
+      await ctx.reply(
+        "Мощность:",
+        Markup.inlineKeyboard([
+          Markup.button.callback("2кВт", `power:inverters:${brand}:2kw`),
+          Markup.button.callback("4кВт", `power:inverters:${brand}:4kw`),
+          Markup.button.callback("6кВт", `power:inverters:${brand}:6kw`),
+          Markup.button.callback("8 кВт", `power:inverters:${brand}:8kw`)
+        ])
+      );
+    }
+    if (brand == 'must') {
+      await ctx.reply(
+        "Мощность:",
+        Markup.inlineKeyboard([
+          Markup.button.callback("1кВт", `power:inverters:${brand}:1kw`),
+          Markup.button.callback("2кВт", `power:inverters:${brand}:2kw`),
+          Markup.button.callback("3кВт", `power:inverters:${brand}:3kw`),
+          Markup.button.callback("5кВт", `power:inverters:${brand}:5kw`),
+          Markup.button.callback("6кВт", `power:inverters:${brand}:6kw`),
+        ])
+      );
+    }
   });
 
   bot.action("menu:batteries", async (ctx) => {
@@ -223,9 +249,9 @@ function registerHandlers(bot: Telegraf): void {
     await ctx.reply(
       lang === "ru" ? "Выберите бренд батареи:" : "Оберіть бренд батареї:",
       Markup.inlineKeyboard([
-        Markup.button.callback("Pylontech", "bat:pylontech"),
-        Markup.button.callback("Dyness", "bat:dyness"),
-        Markup.button.callback("Sofar", "bat:sofar")
+        Markup.button.callback("Must", "bat:must"),
+        Markup.button.callback("Felicity", "bat:felicity"),
+        Markup.button.callback("Deye", "bat:deye")
       ])
     );
 
